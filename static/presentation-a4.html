@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Présentation A4 - Suivi des sacs poubelle</title>
+    <style>
+      :root {
+        --page-bg: #d9dddf;
+        --paper: #ffffff;
+        --line: #d7dddf;
+        --line-strong: #c4cccf;
+        --ink: #1f2e30;
+        --ink-soft: #55696c;
+        --sea: #175d61;
+        --sea-deep: #0f4346;
+        --sea-mist: #dce9e6;
+        --rust: #ba643c;
+        --rust-soft: #f1d0bf;
+        --gold: #d6a45d;
+        --panel: rgba(255, 250, 242, 0.88);
+        --shadow: 0 14px 36px rgba(18, 35, 39, 0.14);
+        --ui-font: "Trebuchet MS", "Gill Sans", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      @page {
+        size: A4 landscape;
+        margin: 6mm;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: var(--ui-font);
+        color: var(--ink);
+        background: var(--page-bg);
+      }
+
+      body,
+      button {
+        font-family: var(--ui-font);
+      }
+
+      .toolbar {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        padding: 14px 16px 0;
+      }
+
+      .toolbar-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        max-width: 1260px;
+        margin: 0 auto;
+        padding: 10px 14px;
+        background: #ffffff;
+        border: 1px solid var(--line);
+        box-shadow: 0 8px 22px rgba(18, 35, 39, 0.09);
+      }
+
+      .toolbar-copy {
+        margin: 0;
+        font-size: 0.9rem;
+        color: var(--ink-soft);
+      }
+
+      .export-button {
+        appearance: none;
+        border: none;
+        padding: 11px 16px;
+        background: linear-gradient(135deg, var(--sea), var(--sea-deep));
+        color: #fffdf8;
+        font-size: 0.94rem;
+        font-weight: 800;
+        cursor: pointer;
+      }
+
+      .deck {
+        width: fit-content;
+        display: grid;
+        gap: 16px;
+        padding: 14px 12px 24px;
+        margin: 0 auto;
+      }
+
+      .page {
+        width: 297mm;
+        height: 210mm;
+        margin: 0 auto;
+        padding: 7mm;
+        background: var(--paper);
+        box-shadow: var(--shadow);
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        gap: 4mm;
+      }
+
+      .page-header {
+        display: grid;
+        gap: 2mm;
+      }
+
+      .page-footer {
+        width: 100%;
+        margin: 0;
+        padding-top: 2mm;
+        border-top: 1px solid var(--line);
+        font-size: 0.74rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-align: right;
+        color: var(--ink-soft);
+      }
+
+      .eyebrow {
+        margin: 0;
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--ink-soft);
+      }
+
+      .page-title,
+      .card-title,
+      .screen-title,
+      .mock-title,
+      .mock-name,
+      .mock-address-title {
+        margin: 0;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+      }
+
+      .page-title {
+        font-size: 1.8rem;
+        line-height: 1.05;
+      }
+
+      .page-lead {
+        margin: 0;
+        max-width: 100%;
+        font-size: 0.9rem;
+        line-height: 1.42;
+        color: var(--ink-soft);
+      }
+
+      .page-body {
+        display: grid;
+        grid-template-columns: minmax(0, 1.82fr) minmax(235px, 0.78fr);
+        gap: 4mm;
+        min-height: 0;
+        align-items: start;
+      }
+
+      .page-body-equal {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .note-card,
+      .summary-card {
+        border: 1px solid var(--line);
+        background: #ffffff;
+      }
+
+      .screen-card {
+        padding: 0;
+        display: grid;
+        gap: 2mm;
+        min-width: 0;
+      }
+
+      .screen-label {
+        display: block;
+        margin: 0;
+        font-size: 0.82rem;
+        font-weight: 800;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--sea-deep);
+      }
+
+      .screen-shell {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 1920 / 1080;
+        overflow: hidden;
+        background: transparent;
+      }
+
+      .screen-capture {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        background: #ffffff;
+      }
+
+      .note-stack {
+        display: grid;
+        gap: 2mm;
+        align-content: start;
+      }
+
+      .note-card {
+        padding: 3.2mm;
+        display: grid;
+        gap: 1.8mm;
+      }
+
+      .card-title {
+        font-size: 0.92rem;
+      }
+
+      .card-copy,
+      .note-list,
+      .summary-card p {
+        margin: 0;
+        font-size: 0.79rem;
+        line-height: 1.36;
+        color: var(--ink-soft);
+      }
+
+      .note-list {
+        padding-left: 16px;
+      }
+
+      .note-list li + li {
+        margin-top: 5px;
+      }
+
+      .summary-grid {
+        display: grid;
+        gap: 2mm;
+      }
+
+      .summary-grid.three {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .summary-grid.four {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .summary-card {
+        padding: 3.2mm;
+        display: grid;
+        gap: 1.2mm;
+      }
+
+      .summary-card strong {
+        font-size: 0.74rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--sea-deep);
+      }
+
+      .narrative-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+        gap: 4mm;
+        min-height: 0;
+        align-items: start;
+      }
+
+      .narrative-grid-equal {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .project-link,
+      .project-link:visited {
+        color: var(--sea-deep);
+        font-weight: 800;
+        text-decoration: none;
+        overflow-wrap: anywhere;
+      }
+
+      .project-link:hover,
+      .project-link:focus {
+        text-decoration: underline;
+      }
+
+      .project-link-note {
+        margin: 0;
+        font-size: 0.74rem;
+        line-height: 1.32;
+        color: var(--ink-soft);
+      }
+
+      .mock-frame {
+        display: grid;
+        grid-template-columns: minmax(118px, 31%) 1fr;
+        gap: 3mm;
+        height: 100%;
+        padding: 3mm;
+      }
+
+      .mock-panel {
+        min-height: 0;
+        border: 1px solid rgba(255, 255, 255, 0.82);
+        background: var(--panel);
+        box-shadow: 0 10px 28px rgba(18, 35, 39, 0.08);
+      }
+
+      .mock-sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: 3mm;
+        padding: 3mm;
+      }
+
+      .mock-brand {
+        display: grid;
+        gap: 4mm;
+      }
+
+      .mock-brand-logo {
+        display: block;
+        width: 50%;
+        max-width: 100%;
+        height: auto;
+        margin: 0 auto;
+        object-fit: contain;
+      }
+
+      .mock-brand-rule {
+        height: 1px;
+        background: rgba(31, 46, 48, 0.14);
+      }
+
+      .mock-head-row,
+      .mock-inline-row,
+      .mock-result-top,
+      .mock-kpi-top,
+      .mock-history-top,
+      .mock-household-top,
+      .mock-support-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+      }
+
+      .mock-title {
+        font-size: 1.02rem;
+      }
+
+      .mock-label {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 0.63rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--ink-soft);
+      }
+
+      .mock-field-stack,
+      .mock-stock,
+      .mock-results,
+      .mock-detail,
+      .mock-households,
+      .mock-map-wrap {
+        display: grid;
+        gap: 2.4mm;
+      }
+
+      .mock-input,
+      .mock-textarea {
+        width: 100%;
+        min-height: 10mm;
+        padding: 7px 10px;
+        border: 1px solid rgba(31, 46, 48, 0.12);
+        background: rgba(255, 255, 255, 0.88);
+        color: var(--ink);
+        font-size: 0.78rem;
+      }
+
+      .mock-input.subtle,
+      .mock-textarea.subtle {
+        color: rgba(77, 97, 100, 0.55);
+      }
+
+      .mock-sidebar-footer {
+        margin-top: auto;
+        display: grid;
+        gap: 2.2mm;
+      }
+
+      .mock-chip,
+      .mock-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 30px;
+        padding: 6px 10px;
+        font-size: 0.7rem;
+        font-weight: 800;
+        white-space: nowrap;
+      }
+
+      .mock-chip {
+        border: 1px solid rgba(23, 93, 97, 0.14);
+        background: rgba(23, 93, 97, 0.08);
+        color: var(--sea-deep);
+      }
+
+      .mock-chip.warn {
+        border-color: rgba(186, 100, 60, 0.18);
+        background: rgba(186, 100, 60, 0.12);
+        color: #8c3f1b;
+      }
+
+      .mock-stock {
+        padding: 2.7mm;
+        background: rgba(255, 255, 255, 0.75);
+        border: 1px solid rgba(31, 46, 48, 0.1);
+      }
+
+      .mock-stock-grid,
+      .mock-stock-form,
+      .mock-kpi-grid,
+      .mock-info-grid,
+      .mock-history-grid {
+        display: grid;
+        gap: 2mm;
+      }
+
+      .mock-stock-grid,
+      .mock-stock-form,
+      .mock-kpi-grid,
+      .mock-info-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .mock-stock-card,
+      .mock-metric,
+      .mock-result-card,
+      .mock-kpi,
+      .mock-info-card,
+      .mock-history-card,
+      .mock-household-card {
+        border: 1px solid rgba(31, 46, 48, 0.1);
+        background: rgba(255, 255, 255, 0.84);
+      }
+
+      .mock-stock-card,
+      .mock-kpi,
+      .mock-info-card,
+      .mock-history-card,
+      .mock-household-card,
+      .mock-result-card,
+      .mock-metric {
+        padding: 2.4mm;
+      }
+
+      .mock-stock-card span,
+      .mock-kpi span,
+      .mock-info-card span,
+      .mock-history-card span,
+      .mock-household-card span,
+      .mock-metric span {
+        display: block;
+        font-size: 0.62rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--ink-soft);
+      }
+
+      .mock-stock-card strong,
+      .mock-kpi strong,
+      .mock-info-card strong,
+      .mock-history-card strong,
+      .mock-household-card strong,
+      .mock-metric strong {
+        display: block;
+        margin-top: 4px;
+        color: var(--sea-deep);
+        font-size: 0.9rem;
+      }
+
+      .mock-sidebar-metrics {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 1.6mm;
+      }
+
+      .mock-results {
+        height: 100%;
+        grid-template-rows: auto 1fr;
+        padding: 3mm;
+      }
+
+      .mock-results-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 2mm;
+        align-content: start;
+      }
+
+      .mock-result-card {
+        display: grid;
+        gap: 6px;
+      }
+
+      .mock-result-card.active,
+      .mock-household-card.active {
+        background:
+          linear-gradient(135deg, rgba(220, 233, 230, 0.78), rgba(255, 255, 255, 0.94)),
+          rgba(255, 255, 255, 0.84);
+        border-color: rgba(23, 93, 97, 0.24);
+      }
+
+      .mock-result-card p,
+      .mock-info-card p,
+      .mock-history-card p,
+      .mock-household-card p,
+      .mock-meta,
+      .mock-copy {
+        margin: 0;
+        font-size: 0.74rem;
+        line-height: 1.35;
+        color: var(--ink-soft);
+      }
+
+      .mock-badge {
+        background: rgba(23, 93, 97, 0.11);
+        color: var(--sea-deep);
+      }
+
+      .mock-detail {
+        height: 100%;
+        padding: 3mm;
+        align-content: start;
+      }
+
+      .mock-detail-hero {
+        display: grid;
+        gap: 2mm;
+        padding-bottom: 2.4mm;
+        border-bottom: 1px solid rgba(31, 46, 48, 0.11);
+      }
+
+      .mock-name {
+        font-size: 1.3rem;
+      }
+
+      .mock-form-shell {
+        display: grid;
+        gap: 2mm;
+        padding: 2.8mm;
+        border: 1px solid rgba(23, 93, 97, 0.12);
+        background:
+          linear-gradient(135deg, rgba(23, 93, 97, 0.08), rgba(214, 164, 93, 0.14)),
+          rgba(255, 255, 255, 0.84);
+      }
+
+      .mock-form-title,
+      .mock-section-kicker {
+        font-size: 0.7rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--sea-deep);
+      }
+
+      .mock-textarea {
+        min-height: 16mm;
+      }
+
+      .mock-history-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .mock-delete {
+        width: 20px;
+        height: 20px;
+        background: rgba(186, 100, 60, 0.13);
+        border: 1px solid rgba(186, 100, 60, 0.16);
+      }
+
+      .mock-support-view {
+        display: grid;
+        grid-template-rows: auto minmax(0, 1fr);
+        gap: 2.6mm;
+        padding: 3mm;
+      }
+
+      .mock-support-summary {
+        display: grid;
+        gap: 2mm;
+      }
+
+      .mock-support-split {
+        display: grid;
+        grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+        gap: 2mm;
+        min-height: 0;
+      }
+
+      .mock-households,
+      .mock-map-wrap {
+        min-height: 0;
+        padding: 2.8mm;
+      }
+
+      .mock-household-stack {
+        display: grid;
+        gap: 2mm;
+      }
+
+      .mock-address-title {
+        font-size: 1rem;
+      }
+
+      .mock-map {
+        position: relative;
+        min-height: 100%;
+        overflow: hidden;
+        border: 1px solid rgba(31, 46, 48, 0.08);
+        background:
+          linear-gradient(135deg, rgba(220, 231, 229, 0.94), rgba(244, 232, 216, 0.88)),
+          #dde8e6;
+      }
+
+      .mock-map-grid {
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(23, 93, 97, 0.08) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(23, 93, 97, 0.08) 1px, transparent 1px);
+        background-size: 28px 28px;
+      }
+
+      .mock-road,
+      .mock-block,
+      .mock-map-pin {
+        position: absolute;
+      }
+
+      .mock-road {
+        background: rgba(255, 255, 255, 0.92);
+      }
+
+      .mock-road.one {
+        top: 18px;
+        left: 24px;
+        width: 74%;
+        height: 12px;
+        transform: rotate(-9deg);
+      }
+
+      .mock-road.two {
+        top: 72px;
+        left: -16px;
+        width: 65%;
+        height: 15px;
+        transform: rotate(32deg);
+      }
+
+      .mock-road.three {
+        bottom: 24px;
+        right: 26px;
+        width: 58%;
+        height: 14px;
+        transform: rotate(12deg);
+      }
+
+      .mock-block {
+        border: 1px solid rgba(23, 93, 97, 0.12);
+        background: rgba(23, 93, 97, 0.12);
+      }
+
+      .mock-block.a {
+        top: 48px;
+        left: 52px;
+        width: 62px;
+        height: 42px;
+      }
+
+      .mock-block.b {
+        top: 104px;
+        left: 126px;
+        width: 74px;
+        height: 48px;
+      }
+
+      .mock-block.c {
+        top: 62px;
+        right: 42px;
+        width: 88px;
+        height: 56px;
+      }
+
+      .mock-block.d {
+        bottom: 34px;
+        right: 96px;
+        width: 66px;
+        height: 44px;
+      }
+
+      .mock-map-pin {
+        top: 92px;
+        right: 142px;
+        display: grid;
+        justify-items: center;
+        gap: 6px;
+      }
+
+      .mock-map-pin-dot {
+        width: 20px;
+        height: 20px;
+        background: var(--rust);
+        border: 4px solid rgba(255, 250, 242, 0.94);
+        box-shadow: 0 10px 18px rgba(186, 100, 60, 0.22);
+      }
+
+      .mock-map-pin-label {
+        padding: 5px 9px;
+        font-size: 0.68rem;
+        font-weight: 800;
+        color: var(--sea-deep);
+        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid rgba(23, 93, 97, 0.12);
+      }
+
+      @media (max-width: 1100px) {
+        .toolbar-inner {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .deck {
+          margin: 0;
+        }
+
+        .page-body,
+        .narrative-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 820px) {
+        .mock-frame {
+          grid-template-columns: 1fr;
+        }
+
+        .mock-results-grid,
+        .mock-stock-grid,
+        .mock-stock-form,
+        .mock-kpi-grid,
+        .mock-info-grid,
+        .mock-history-grid,
+        .mock-support-split {
+          grid-template-columns: 1fr;
+        }
+
+        .mock-sidebar-metrics,
+        .summary-grid.three,
+        .summary-grid.four {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media print {
+        body {
+          background: #ffffff;
+        }
+
+        .toolbar {
+          display: none;
+        }
+
+        .deck {
+          gap: 0;
+          padding: 0;
+        }
+
+        .page {
+          width: 297mm;
+          height: 210mm;
+          box-shadow: none;
+          break-after: page;
+        }
+
+        .page:last-child {
+          break-after: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="toolbar">
+      <div class="toolbar-inner">
+        <button type="button" class="export-button" id="export-pdf">Exporter en PDF</button>
+        <p class="toolbar-copy">
+          Le bouton ouvre l’impression du navigateur. Choisir ensuite "Enregistrer au format PDF".
+        </p>
+      </div>
+    </div>
+
+    <main class="deck">
+      <section class="page">
+        <header class="page-header">
+          <p class="eyebrow">Projet personnel - candidature</p>
+          <h1 class="page-title">Démarche et origine du projet</h1>
+          <p class="page-lead">
+            Ce document accompagne mon CV à destination de la communauté de communes. Il présente
+            une application conçue à partir d'une situation vécue comme usager, puis développée
+            comme outil numérique concret pour simplifier le travail des agents et l'expérience
+            des habitants.
+          </p>
+        </header>
+
+        <div class="narrative-grid narrative-grid-equal">
+          <section class="note-stack">
+            <article class="note-card">
+              <h2 class="card-title">Le déclencheur</h2>
+              <p class="card-copy">
+                En venant un mercredi récupérer les sacs poubelles auxquels mon foyer avait droit,
+                j'ai vu une agente consulter un annuaire papier volumineux pour retrouver le nom
+                rattaché à la maison. La recherche a été longue, car le support était manuel et la
+                situation de l'adresse n'était plus totalement à jour.
+              </p>
+            </article>
+
+            <article class="note-card">
+              <h2 class="card-title">Le constat terrain</h2>
+              <ul class="note-list">
+                <li>Le support papier ralentit fortement la recherche lorsqu'un nom ou une adresse change.</li>
+                <li>Les situations familiales ou successorales rendent vite l'information plus difficile à vérifier.</li>
+                <li>Une base papier n'offre ni recherche instantanée, ni historique, ni mise à jour simple.</li>
+              </ul>
+            </article>
+
+            <article class="note-card">
+              <h2 class="card-title">L'intention du projet</h2>
+              <p class="card-copy">
+                J'ai voulu proposer une réponse simple à ce point de friction : retrouver
+                rapidement un foyer, visualiser son contexte, suivre le stock de sacs et conserver
+                une trace des remises déjà effectuées. L'objectif est de fluidifier l'accueil, de
+                fiabiliser l'information et de renforcer le service rendu.
+              </p>
+            </article>
+          </section>
+
+          <aside class="note-stack">
+            <article class="note-card">
+              <h2 class="card-title">Pourquoi ce projet accompagne mon CV</h2>
+              <p class="card-copy">
+                Ce travail montre ma façon d'aborder un besoin concret : observer une difficulté
+                réelle, comprendre ce qu'elle produit sur le terrain, puis construire une solution
+                numérique lisible, utile et directement reliée à un usage de service public local.
+              </p>
+            </article>
+
+            <article class="note-card">
+              <h2 class="card-title">Valeur immédiate pour la collectivité</h2>
+              <ul class="note-list">
+                <li>Recherche plus rapide qu'un annuaire papier.</li>
+                <li>Information plus facile à mettre à jour dans le temps.</li>
+                <li>Meilleure lisibilité sur les foyers, les remises et le stock disponible.</li>
+              </ul>
+            </article>
+
+            <article class="note-card">
+              <h2 class="card-title">Lien GitHub du projet</h2>
+              <p class="card-copy">
+                <a
+                  class="project-link"
+                  href="https://github.com/Baradoz29/distribution-sacs"
+                  target="_blank"
+                  rel="noreferrer"
+                  >Consulter le dépôt GitHub du projet</a
+                >
+              </p>
+              <p class="project-link-note">
+                Le dépôt rassemble le code source, la structure du projet et les principaux choix
+                de réalisation.
+              </p>
+            </article>
+          </aside>
+        </div>
+
+        <p class="page-footer">1/5</p>
+      </section>
+
+      <section class="page">
+        <header class="page-header">
+          <p class="eyebrow">Présentation de l'application</p>
+          <h1 class="page-title">Vue d'ensemble de l'outil de suivi des sacs poubelle</h1>
+          <p class="page-lead">
+            L'application aide la commune à retrouver rapidement un foyer, vérifier son contexte
+            et enregistrer une remise de sacs sans repartir de listes papier ou de fichiers
+            dispersés. L'objectif est double : gagner du temps sur le terrain et fiabiliser le
+            suivi des distributions.
+          </p>
+        </header>
+
+        <div class="page-body">
+          <section class="screen-card">
+            <p class="screen-label">Écran 1 - Recherche, stock et résultats</p>
+            <div class="screen-shell">
+              <img
+                class="screen-capture"
+                src="images/presentation-screen-1.png"
+                alt="Capture réelle de l'écran de recherche de l'application"
+              />
+            </div>
+          </section>
+
+          <aside class="note-stack">
+            <article class="note-card">
+              <h2 class="card-title">Ce que montre cette page</h2>
+              <p class="card-copy">
+                Le premier écran sert de point d'entrée. L'agent cherche un nom, un prénom ou une
+                adresse, voit les résultats les plus proches et garde en même temps une lecture
+                simple du stock communal.
+              </p>
+            </article>
+
+            <article class="note-card">
+              <h2 class="card-title">Problème résolu</h2>
+              <ul class="note-list">
+                <li>Éviter de chercher dans plusieurs listes ou fichiers avant chaque remise.</li>
+                <li>Réduire les erreurs d'identification quand plusieurs habitants partagent le même nom.</li>
+                <li>Donner une vision immédiate du stock sans changer d'écran.</li>
+              </ul>
+            </article>
+
+          </aside>
+        </div>
+
+        <div class="summary-grid three">
+          <article class="summary-card">
+            <strong>Recherche rapide</strong>
+            <p>Un seul écran pour retrouver un foyer et engager l'action sans perdre de temps.</p>
+          </article>
+          <article class="summary-card">
+            <strong>Suivi partagé</strong>
+            <p>Les informations habitant, adresse et stock vivent dans le même outil.</p>
+          </article>
+          <article class="summary-card">
+            <strong>Lecture immédiate</strong>
+            <p>Les chiffres de couverture du territoire restent visibles tout au long de l'usage.</p>
+          </article>
+        </div>
+        <p class="page-footer">2/5</p>
+      </section>
+
+      <section class="page">
+        <header class="page-header">
+          <p class="eyebrow">Présentation de l'application</p>
+          <h1 class="page-title">Fiche habitant et enregistrement d'une remise</h1>
+          <p class="page-lead">
+            Une fois la bonne personne sélectionnée, l'application bascule sur une fiche détaillée
+            qui donne le contexte utile, permet d'ajouter une remise et conserve l'historique des
+            distributions effectuées.
+          </p>
+        </header>
+
+        <div class="page-body">
+          <section class="screen-card">
+            <p class="screen-label">Écran 2 - Fiche habitant et historique</p>
+            <div class="screen-shell">
+              <img
+                class="screen-capture"
+                src="images/presentation-screen-2.png"
+                alt="Capture réelle de la fiche détaillée d'un habitant"
+              />
+            </div>
+          </section>
+
+          <aside class="note-stack">
+            <article class="note-card">
+              <h2 class="card-title">Ce que montre cette page</h2>
+              <p class="card-copy">
+                La fiche habitant est le cœur opérationnel de l'outil. C'est ici que l'agent
+                vérifie la dernière remise, saisit la distribution du jour et garde une trace
+                exploitable plus tard.
+              </p>
+            </article>
+
+            <article class="note-card">
+              <h2 class="card-title">Problème résolu</h2>
+              <ul class="note-list">
+                <li>Éviter les doubles remises quand plusieurs agents interviennent sur une même campagne.</li>
+                <li>Justifier une distribution en cas de question ou de contestation.</li>
+                <li>Conserver un historique simple, lisible et modifiable si une erreur est détectée.</li>
+              </ul>
+            </article>
+
+          </aside>
+        </div>
+
+        <div class="summary-grid three">
+          <article class="summary-card">
+            <strong>Traçabilité</strong>
+            <p>Chaque remise est saisie avec une date, une quantité et un commentaire si besoin.</p>
+          </article>
+          <article class="summary-card">
+            <strong>Fiabilité</strong>
+            <p>Le détail habitant limite les erreurs d'attribution et facilite la vérification.</p>
+          </article>
+          <article class="summary-card">
+            <strong>Correction simple</strong>
+            <p>L'historique rend les erreurs visibles et permet de revenir sur une entrée si nécessaire.</p>
+          </article>
+        </div>
+        <p class="page-footer">3/5</p>
+      </section>
+
+      <section class="page">
+        <header class="page-header">
+          <p class="eyebrow">Présentation de l'application</p>
+          <h1 class="page-title">Vision foyer, adresse et carte pour agir avec plus de contexte</h1>
+          <p class="page-lead">
+            La distribution ne se limite pas à une personne. L'application aide aussi à comprendre
+            un foyer complet, à relier les habitants à leur adresse et à se repérer visuellement
+            grâce à une mini-carte utile pour les tournées et les contrôles.
+          </p>
+        </header>
+
+        <div class="page-body">
+          <section class="screen-card">
+            <p class="screen-label">Écran 3 - Foyer, détail et mini-carte</p>
+            <div class="screen-shell">
+              <img
+                class="screen-capture"
+                src="images/presentation-screen-3.png"
+                alt="Capture réelle d'un foyer avec mini-carte et fiche habitant"
+              />
+            </div>
+          </section>
+
+          <aside class="note-stack">
+            <article class="note-card">
+              <h2 class="card-title">Ce que montre cette page</h2>
+              <p class="card-copy">
+                Le troisième écran illustre la lecture "foyer + lieu". L'application ne suit pas
+                seulement une fiche individuelle : elle aide aussi à comprendre le ménage et son
+                implantation dans la ville.
+              </p>
+            </article>
+
+            <article class="note-card">
+              <h2 class="card-title">Problème résolu</h2>
+              <ul class="note-list">
+                <li>Mieux vérifier qu'une remise est bien rattachée au bon foyer, pas seulement au bon nom.</li>
+                <li>Disposer d'un repère visuel pour les campagnes en tournée ou les situations ambiguës.</li>
+                <li>Comprendre rapidement qui habite à la même adresse et quel historique existe déjà.</li>
+              </ul>
+            </article>
+
+            <article class="note-card">
+              <h2 class="card-title">Ce qu'il faut retenir</h2>
+              <ul class="note-list">
+                <li>L'outil relie des données administratives, une logique de stock et un usage terrain.</li>
+                <li>Il pose une base solide pour un suivi communal plus juste, plus lisible et plus pilotable.</li>
+                <li>La même interface peut servir au guichet, en permanence ou en appui d'une tournée.</li>
+              </ul>
+            </article>
+          </aside>
+        </div>
+
+        <div class="summary-grid four">
+          <article class="summary-card">
+            <strong>Gain de temps</strong>
+            <p>Moins d'allers-retours entre plusieurs supports ou plusieurs outils.</p>
+          </article>
+          <article class="summary-card">
+            <strong>Justesse</strong>
+            <p>Une meilleure association entre personne, foyer, adresse et remise enregistrée.</p>
+          </article>
+          <article class="summary-card">
+            <strong>Pilotage</strong>
+            <p>Un suivi plus simple du stock et de la couverture réelle de la campagne.</p>
+          </article>
+          <article class="summary-card">
+            <strong>Base évolutive</strong>
+            <p>Une fondation exploitable pour l'historique par campagne et d'autres indicateurs.</p>
+          </article>
+        </div>
+        <p class="page-footer">4/5</p>
+      </section>
+
+      <section class="page">
+        <header class="page-header">
+          <p class="eyebrow">Perspectives de valorisation</p>
+          <h1 class="page-title">Perspectives d'extension autour du logiciel</h1>
+          <p class="page-lead">
+            Le logiciel apporte déjà une réponse claire, rapide et directement exploitable. Il
+            peut aussi s'inscrire dans une dynamique plus large de pilotage, d'organisation des
+            campagnes et d'accompagnement des agents.
+          </p>
+        </header>
+
+        <div class="narrative-grid narrative-grid-equal">
+          <section class="note-stack">
+            <article class="note-card">
+              <h2 class="card-title">1. Approfondir l'exploitation des données</h2>
+              <ul class="note-list">
+                <li>Actualiser régulièrement les adresses depuis des sources publiques comme la BAN.</li>
+                <li>Suivre plus finement les évolutions d'un foyer ou d'une adresse.</li>
+                <li>Consolider encore la qualité des informations dans la durée.</li>
+              </ul>
+            </article>
+
+            <article class="note-card">
+              <h2 class="card-title">2. Structurer les campagnes de distribution</h2>
+              <ul class="note-list">
+                <li>Conserver un historique par année ou par campagne.</li>
+                <li>Distinguer les remises exceptionnelles des remises habituelles.</li>
+                <li>Ajouter des règles ou quotas selon l'organisation du service.</li>
+              </ul>
+            </article>
+
+            <article class="note-card">
+              <h2 class="card-title">3. Étendre les usages agents</h2>
+              <ul class="note-list">
+                <li>Ajouter des comptes utilisateurs et des droits selon les profils.</li>
+                <li>Prévoir un usage tablette ou mobile pour les permanences et tournées.</li>
+                <li>Faciliter encore la validation et le suivi des remises.</li>
+              </ul>
+            </article>
+          </section>
+
+          <aside class="note-stack">
+            <article class="note-card">
+              <h2 class="card-title">4. Outiller le pilotage</h2>
+              <ul class="note-list">
+                <li>Produire des exports et tableaux de bord simples.</li>
+                <li>Suivre les foyers déjà servis, restants ou en anomalie.</li>
+                <li>Visualiser le niveau de stock et son évolution dans le temps.</li>
+              </ul>
+            </article>
+
+            <article class="note-card">
+              <h2 class="card-title">5. Déployer l'outil à plus grande échelle</h2>
+              <p class="card-copy">
+                Autour de ce cœur applicatif, il est possible d'ajouter une documentation
+                d'accompagnement, un cadre de déploiement stable, des exports complémentaires et
+                une diffusion plus large au sein du service.
+              </p>
+            </article>
+          </aside>
+        </div>
+        <p class="page-footer">5/5</p>
+      </section>
+    </main>
+
+    <script>
+      document.getElementById("export-pdf").addEventListener("click", () => {
+        window.print();
+      });
+    </script>
+  </body>
+</html>

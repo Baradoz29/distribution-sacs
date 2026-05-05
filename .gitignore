@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+data/*.db
+data/tile_cache/
+data/chrome-headless-profile/
