@@ -8,19 +8,15 @@ Le projet combine un annuaire de foyers, une carte, un suivi des remises et des 
 
 Presentation visuelle complete : [presentation-a4.html](static/presentation-a4.html)
 
-Les captures ci-dessous reprennent les ecrans utilises dans cette presentation.
+Les captures ci-dessous reprennent les vues les plus utiles de cette presentation.
 
-### Ecran 1 - Vue generale et carte
+### Ecran 1 - Recherche, stock et resultats
 
-<img src="static/images/presentation-screen-1.png" alt="Ecran 1 - Vue generale et carte" width="1100">
+<img src="static/images/presentation-screen-1.png" alt="Ecran 1 - Recherche, stock et resultats" width="1100">
 
-### Ecran 2 - Recherche, fiche habitant et historique
+### Ecran 2 - Fiche habitant et historique
 
-<img src="static/images/presentation-screen-2.png" alt="Ecran 2 - Recherche, fiche habitant et historique" width="1100">
-
-### Ecran 3 - Foyer, adresse et mini-carte
-
-<img src="static/images/presentation-screen-3.png" alt="Ecran 3 - Foyer, adresse et mini-carte" width="1100">
+<img src="static/images/presentation-screen-2.png" alt="Ecran 2 - Fiche habitant et historique" width="1100">
 
 ## Ce que fait l'application
 
