@@ -6,21 +6,21 @@
     <title>Présentation A4 - Suivi des sacs poubelle</title>
     <style>
       :root {
-        --page-bg: #d9dddf;
+        --page-bg: #f5f7f8;
         --paper: #ffffff;
-        --line: #d7dddf;
-        --line-strong: #c4cccf;
-        --ink: #1f2e30;
-        --ink-soft: #55696c;
-        --sea: #175d61;
-        --sea-deep: #0f4346;
-        --sea-mist: #dce9e6;
-        --rust: #ba643c;
+        --line: #dee2e6;
+        --line-strong: #ced4da;
+        --ink: #2c3e50;      /* Modern CV Title Color (Midnight Blue) */
+        --ink-soft: #546e7a; /* Modern CV Text Color (Slate Grey) */
+        --sea: #3498db;      /* Modern Accent Color (Soft Blue) */
+        --sea-deep: #2980b9;
+        --sea-mist: #ebf5fb;
+        --rust: #e67e22;     /* Modern Highlight Color */
         --rust-soft: #f1d0bf;
         --gold: #d6a45d;
         --panel: rgba(255, 250, 242, 0.88);
         --shadow: 0 14px 36px rgba(18, 35, 39, 0.14);
-        --ui-font: "Trebuchet MS", "Gill Sans", sans-serif;
+        --ui-font: "Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode", sans-serif;
       }
 
       * {
@@ -29,13 +29,15 @@
 
       @page {
         size: A4 landscape;
-        margin: 6mm;
+        margin: 0;
       }
 
       html,
       body {
         margin: 0;
         padding: 0;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
       }
 
       body {
@@ -69,6 +71,12 @@
         box-shadow: 0 8px 22px rgba(18, 35, 39, 0.09);
       }
 
+      .toolbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
       .toolbar-copy {
         margin: 0;
         font-size: 0.9rem;
@@ -86,6 +94,17 @@
         cursor: pointer;
       }
 
+      .export-button:disabled {
+        opacity: 0.72;
+        cursor: progress;
+      }
+
+      .export-button.secondary {
+        border: 1px solid var(--line-strong);
+        background: #ffffff;
+        color: var(--sea-deep);
+      }
+
       .deck {
         width: fit-content;
         display: grid;
@@ -98,23 +117,23 @@
         width: 297mm;
         height: 210mm;
         margin: 0 auto;
-        padding: 7mm;
+        padding: 6.1mm 6.4mm 5.6mm;
         background: var(--paper);
         box-shadow: var(--shadow);
         display: grid;
         grid-template-rows: auto 1fr auto;
-        gap: 4mm;
+        gap: 3.1mm;
       }
 
       .page-header {
         display: grid;
-        gap: 2mm;
+        gap: 1.35mm;
       }
 
       .page-footer {
         width: 100%;
         margin: 0;
-        padding-top: 2mm;
+        padding-top: 1.2mm;
         border-top: 1px solid var(--line);
         font-size: 0.74rem;
         font-weight: 800;
@@ -161,11 +180,25 @@
         grid-template-columns: minmax(0, 1.82fr) minmax(235px, 0.78fr);
         gap: 4mm;
         min-height: 0;
-        align-items: start;
+        height: 100%;
+        align-items: center;
       }
 
       .page-body-equal {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .page-body-story {
+        grid-template-columns: minmax(0, 1.72fr) minmax(90mm, 0.94fr);
+        gap: 2.8mm;
+      }
+
+      .page-body > section,
+      .page-body > aside,
+      .narrative-grid > section,
+      .narrative-grid > aside {
+        min-height: 0;
+        align-self: center;
       }
 
       .note-card,
@@ -177,7 +210,7 @@
       .screen-card {
         padding: 0;
         display: grid;
-        gap: 2mm;
+        gap: 2.4mm;
         min-width: 0;
       }
 
@@ -194,7 +227,7 @@
       .screen-shell {
         position: relative;
         width: 100%;
-        aspect-ratio: 1920 / 1080;
+        aspect-ratio: 1680 / 1080;
         overflow: hidden;
         background: transparent;
       }
@@ -204,12 +237,13 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
+        object-position: center top;
         background: #ffffff;
       }
 
       .note-stack {
         display: grid;
-        gap: 2mm;
+        gap: 2.4mm;
         align-content: start;
       }
 
@@ -238,6 +272,91 @@
 
       .note-list li + li {
         margin-top: 5px;
+      }
+
+      .story-card {
+        height: 100%;
+        padding: 3.4mm;
+        display: grid;
+        gap: 2mm;
+        align-content: start;
+      }
+
+      .story-card > .card-title {
+        font-size: 0.98rem;
+      }
+
+      .story-intro,
+      .story-note {
+        margin: 0;
+        font-size: 0.75rem;
+        line-height: 1.34;
+        color: var(--ink-soft);
+      }
+
+      .story-steps {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 1.6mm;
+      }
+
+      .story-step {
+        display: grid;
+        grid-template-columns: 13px 1fr;
+        gap: 2mm;
+        align-items: start;
+        padding-top: 1.5mm;
+        border-top: 1px solid var(--line);
+      }
+
+      .story-step:first-child {
+        padding-top: 0;
+        border-top: none;
+      }
+
+      .story-step-index {
+        font-size: 0.76rem;
+        font-weight: 800;
+        line-height: 1.2;
+        color: var(--sea-deep);
+      }
+
+      .story-step-body {
+        display: grid;
+        gap: 0.6mm;
+      }
+
+      .story-step-title {
+        margin: 0;
+        font-size: 0.75rem;
+        font-weight: 800;
+        line-height: 1.2;
+        color: var(--ink);
+      }
+
+      .story-step-copy {
+        margin: 0;
+        font-size: 0.72rem;
+        line-height: 1.3;
+        color: var(--ink-soft);
+      }
+
+      .story-section {
+        display: grid;
+        gap: 0.8mm;
+        padding-top: 1.6mm;
+        border-top: 1px solid var(--line);
+      }
+
+      .story-section-title {
+        margin: 0;
+        font-size: 0.71rem;
+        font-weight: 800;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--sea-deep);
       }
 
       .summary-grid {
@@ -270,13 +389,18 @@
       .narrative-grid {
         display: grid;
         grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
-        gap: 4mm;
+        gap: 3.4mm;
         min-height: 0;
-        align-items: start;
+        height: 100%;
+        align-items: center;
       }
 
       .narrative-grid-equal {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .narrative-grid-equal .note-stack {
+        align-content: center;
       }
 
       .project-link,
@@ -297,6 +421,15 @@
         font-size: 0.74rem;
         line-height: 1.32;
         color: var(--ink-soft);
+      }
+
+      .project-url {
+        margin: 0;
+        font-size: 0.8rem;
+        font-weight: 800;
+        line-height: 1.34;
+        color: var(--sea-deep);
+        overflow-wrap: anywhere;
       }
 
       .mock-frame {
@@ -737,7 +870,7 @@
         border: 1px solid rgba(23, 93, 97, 0.12);
       }
 
-      @media (max-width: 1100px) {
+      @media screen and (max-width: 1100px) {
         .toolbar-inner {
           align-items: flex-start;
           flex-direction: column;
@@ -753,7 +886,7 @@
         }
       }
 
-      @media (max-width: 820px) {
+      @media screen and (max-width: 820px) {
         .mock-frame {
           grid-template-columns: 1fr;
         }
@@ -776,8 +909,14 @@
       }
 
       @media print {
+        * {
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
+        }
+
+        html,
         body {
-          background: #ffffff;
+          background: var(--page-bg);
         }
 
         .toolbar {
@@ -787,13 +926,43 @@
         .deck {
           gap: 0;
           padding: 0;
+          margin: 0;
         }
 
         .page {
           width: 297mm;
           height: 210mm;
-          box-shadow: none;
+          margin: 0;
+          box-shadow: var(--shadow);
+          overflow: hidden;
+          break-inside: avoid;
           break-after: page;
+        }
+
+        .page-body {
+          grid-template-columns: minmax(0, 1.82fr) minmax(235px, 0.78fr) !important;
+          align-items: center !important;
+        }
+
+        .page-body-story {
+          grid-template-columns: minmax(0, 1.72fr) minmax(90mm, 0.94fr) !important;
+        }
+
+        .narrative-grid {
+          grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr) !important;
+          align-items: center !important;
+        }
+
+        .narrative-grid-equal {
+          grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        }
+
+        .summary-grid.three {
+          grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        }
+
+        .summary-grid.four {
+          grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
         }
 
         .page:last-child {
@@ -805,9 +974,13 @@
   <body>
     <div class="toolbar">
       <div class="toolbar-inner">
-        <button type="button" class="export-button" id="export-pdf">Exporter en PDF</button>
+        <div class="toolbar-actions">
+          <button type="button" class="export-button" id="download-pdf">Télécharger le PDF</button>
+          <button type="button" class="export-button secondary" id="print-pdf">Aperçu impression</button>
+        </div>
         <p class="toolbar-copy">
-          Le bouton ouvre l’impression du navigateur. Choisir ensuite "Enregistrer au format PDF".
+          Le PDF est généré directement depuis les pages affichées. L’aperçu impression reste
+          disponible en secours.
         </p>
       </div>
     </div>
@@ -878,15 +1051,7 @@
 
             <article class="note-card">
               <h2 class="card-title">Lien GitHub du projet</h2>
-              <p class="card-copy">
-                <a
-                  class="project-link"
-                  href="https://github.com/Baradoz29/distribution-sacs"
-                  target="_blank"
-                  rel="noreferrer"
-                  >Consulter le dépôt GitHub du projet</a
-                >
-              </p>
+              <p class="project-url">github.com/Baradoz29/distribution-sacs</p>
               <p class="project-link-note">
                 Le dépôt rassemble le code source, la structure du projet et les principaux choix
                 de réalisation.
@@ -910,7 +1075,7 @@
           </p>
         </header>
 
-        <div class="page-body">
+        <div class="page-body page-body-story">
           <section class="screen-card">
             <p class="screen-label">Écran 1 - Recherche, stock et résultats</p>
             <div class="screen-shell">
@@ -922,41 +1087,75 @@
             </div>
           </section>
 
-          <aside class="note-stack">
-            <article class="note-card">
-              <h2 class="card-title">Ce que montre cette page</h2>
-              <p class="card-copy">
-                Le premier écran sert de point d'entrée. L'agent cherche un nom, un prénom ou une
-                adresse, voit les résultats les plus proches et garde en même temps une lecture
-                simple du stock communal.
+          <aside>
+            <article class="note-card story-card">
+              <h2 class="card-title">Ce que raconte cette première page</h2>
+              <p class="story-intro">
+                L'écran d'accueil sert à retrouver un foyer en quelques secondes avant de faire
+                une remise. Il rassemble les informations essentielles pour démarrer la
+                distribution.
               </p>
+              <ol class="story-steps">
+                <li class="story-step">
+                  <span class="story-step-index">1</span>
+                  <div class="story-step-body">
+                    <p class="story-step-title">Recherche multi-critères</p>
+                    <p class="story-step-copy">
+                      Nom, prénom ou adresse pour retrouver un habitant même avec une information
+                      partielle.
+                    </p>
+                  </div>
+                </li>
+                <li class="story-step">
+                  <span class="story-step-index">2</span>
+                  <div class="story-step-body">
+                    <p class="story-step-title">Suggestions automatiques</p>
+                    <p class="story-step-copy">
+                      Elles accélèrent la saisie et limitent les erreurs d'orthographe sur les
+                      noms et les voies.
+                    </p>
+                  </div>
+                </li>
+                <li class="story-step">
+                  <span class="story-step-index">3</span>
+                  <div class="story-step-body">
+                    <p class="story-step-title">État du stock</p>
+                    <p class="story-step-copy">
+                      Les sacs noirs et jaunes restants sont visibles immédiatement, avec un
+                      indicateur d'alerte si le stock devient critique.
+                    </p>
+                  </div>
+                </li>
+                <li class="story-step">
+                  <span class="story-step-index">4</span>
+                  <div class="story-step-body">
+                    <p class="story-step-title">Indicateurs de couverture</p>
+                    <p class="story-step-copy">
+                      Les compteurs donnent une lecture simple du territoire suivi : habitants,
+                      adresses, voies et volume d'adresses issues de la BAN.
+                    </p>
+                  </div>
+                </li>
+                <li class="story-step">
+                  <span class="story-step-index">5</span>
+                  <div class="story-step-body">
+                    <p class="story-step-title">Liste d'habitants actionnable</p>
+                    <p class="story-step-copy">
+                      Chaque résultat synthétise l'identité, l'adresse et la dernière remise pour
+                      aider l'agent à choisir la bonne fiche.
+                    </p>
+                  </div>
+                </li>
+              </ol>
+              <section class="story-section">
+                <h3 class="story-section-title">Message clé à faire passer</h3>
+                <p class="story-note">
+                  L'application réduit le temps passé à chercher l'information avant même de
+                  distribuer le moindre sac.
+                </p>
+              </section>
             </article>
-
-            <article class="note-card">
-              <h2 class="card-title">Problème résolu</h2>
-              <ul class="note-list">
-                <li>Éviter de chercher dans plusieurs listes ou fichiers avant chaque remise.</li>
-                <li>Réduire les erreurs d'identification quand plusieurs habitants partagent le même nom.</li>
-                <li>Donner une vision immédiate du stock sans changer d'écran.</li>
-              </ul>
-            </article>
-
           </aside>
-        </div>
-
-        <div class="summary-grid three">
-          <article class="summary-card">
-            <strong>Recherche rapide</strong>
-            <p>Un seul écran pour retrouver un foyer et engager l'action sans perdre de temps.</p>
-          </article>
-          <article class="summary-card">
-            <strong>Suivi partagé</strong>
-            <p>Les informations habitant, adresse et stock vivent dans le même outil.</p>
-          </article>
-          <article class="summary-card">
-            <strong>Lecture immédiate</strong>
-            <p>Les chiffres de couverture du territoire restent visibles tout au long de l'usage.</p>
-          </article>
         </div>
         <p class="page-footer">2/5</p>
       </section>
@@ -972,7 +1171,7 @@
           </p>
         </header>
 
-        <div class="page-body">
+        <div class="page-body page-body-story">
           <section class="screen-card">
             <p class="screen-label">Écran 2 - Fiche habitant et historique</p>
             <div class="screen-shell">
@@ -984,41 +1183,71 @@
             </div>
           </section>
 
-          <aside class="note-stack">
-            <article class="note-card">
-              <h2 class="card-title">Ce que montre cette page</h2>
-              <p class="card-copy">
-                La fiche habitant est le cœur opérationnel de l'outil. C'est ici que l'agent
-                vérifie la dernière remise, saisit la distribution du jour et garde une trace
-                exploitable plus tard.
+          <aside>
+            <article class="note-card story-card">
+              <h2 class="card-title">Ce que raconte cette deuxième page</h2>
+              <p class="story-intro">
+                Ici, on ne montre plus seulement la recherche. On montre comment l'application
+                sécurise la distribution en rendant la remise traçable et facile à expliquer.
               </p>
+              <ol class="story-steps">
+                <li class="story-step">
+                  <span class="story-step-index">1</span>
+                  <div class="story-step-body">
+                    <p class="story-step-title">Fiche habitant immédiate</p>
+                    <p class="story-step-copy">
+                      L'identité, l'adresse et la dernière remise sont visibles dès l'ouverture,
+                      sans navigation supplémentaire.
+                    </p>
+                  </div>
+                </li>
+                <li class="story-step">
+                  <span class="story-step-index">2</span>
+                  <div class="story-step-body">
+                    <p class="story-step-title">Formulaire de remise simple</p>
+                    <p class="story-step-copy">
+                      L'agent saisit la date, les quantités remises et une note courte. L'action
+                      est donc documentée au moment même où elle se produit.
+                    </p>
+                  </div>
+                </li>
+                <li class="story-step">
+                  <span class="story-step-index">3</span>
+                  <div class="story-step-body">
+                    <p class="story-step-title">Historique consultable</p>
+                    <p class="story-step-copy">
+                      Les remises précédentes servent de preuve, évitent les doublons et aident à
+                      répondre à une contestation ou à une vérification.
+                    </p>
+                  </div>
+                </li>
+                <li class="story-step">
+                  <span class="story-step-index">4</span>
+                  <div class="story-step-body">
+                    <p class="story-step-title">Lien direct avec le stock</p>
+                    <p class="story-step-copy">
+                      La remise n'est pas une simple note : elle s'inscrit dans un suivi global du
+                      stock communal.
+                    </p>
+                  </div>
+                </li>
+              </ol>
+              <section class="story-section">
+                <h3 class="story-section-title">Problème résolu</h3>
+                <p class="story-note">
+                  Sans historique centralisé, il est difficile de savoir qui a déjà été servi et
+                  quand. Cette fiche transforme une distribution informelle en opération suivie.
+                </p>
+              </section>
+              <section class="story-section">
+                <h3 class="story-section-title">Message clé</h3>
+                <p class="story-note">
+                  L'application permet de distribuer, justifier et corriger plus facilement, avec
+                  moins de charge mentale pour l'agent.
+                </p>
+              </section>
             </article>
-
-            <article class="note-card">
-              <h2 class="card-title">Problème résolu</h2>
-              <ul class="note-list">
-                <li>Éviter les doubles remises quand plusieurs agents interviennent sur une même campagne.</li>
-                <li>Justifier une distribution en cas de question ou de contestation.</li>
-                <li>Conserver un historique simple, lisible et modifiable si une erreur est détectée.</li>
-              </ul>
-            </article>
-
           </aside>
-        </div>
-
-        <div class="summary-grid three">
-          <article class="summary-card">
-            <strong>Traçabilité</strong>
-            <p>Chaque remise est saisie avec une date, une quantité et un commentaire si besoin.</p>
-          </article>
-          <article class="summary-card">
-            <strong>Fiabilité</strong>
-            <p>Le détail habitant limite les erreurs d'attribution et facilite la vérification.</p>
-          </article>
-          <article class="summary-card">
-            <strong>Correction simple</strong>
-            <p>L'historique rend les erreurs visibles et permet de revenir sur une entrée si nécessaire.</p>
-          </article>
         </div>
         <p class="page-footer">3/5</p>
       </section>
@@ -1034,7 +1263,7 @@
           </p>
         </header>
 
-        <div class="page-body">
+        <div class="page-body page-body-story">
           <section class="screen-card">
             <p class="screen-label">Écran 3 - Foyer, détail et mini-carte</p>
             <div class="screen-shell">
@@ -1046,53 +1275,63 @@
             </div>
           </section>
 
-          <aside class="note-stack">
-            <article class="note-card">
-              <h2 class="card-title">Ce que montre cette page</h2>
-              <p class="card-copy">
-                Le troisième écran illustre la lecture "foyer + lieu". L'application ne suit pas
-                seulement une fiche individuelle : elle aide aussi à comprendre le ménage et son
-                implantation dans la ville.
+          <aside>
+            <article class="note-card story-card">
+              <h2 class="card-title">Ce que raconte cette troisième page</h2>
+              <p class="story-intro">
+                Cette vue montre que l'outil ne suit pas seulement des personnes, mais aussi des
+                foyers et des lieux. C'est utile pour les tournées, les vérifications et la
+                lecture globale du territoire.
               </p>
-            </article>
-
-            <article class="note-card">
-              <h2 class="card-title">Problème résolu</h2>
-              <ul class="note-list">
-                <li>Mieux vérifier qu'une remise est bien rattachée au bon foyer, pas seulement au bon nom.</li>
-                <li>Disposer d'un repère visuel pour les campagnes en tournée ou les situations ambiguës.</li>
-                <li>Comprendre rapidement qui habite à la même adresse et quel historique existe déjà.</li>
-              </ul>
-            </article>
-
-            <article class="note-card">
-              <h2 class="card-title">Ce qu'il faut retenir</h2>
-              <ul class="note-list">
-                <li>L'outil relie des données administratives, une logique de stock et un usage terrain.</li>
-                <li>Il pose une base solide pour un suivi communal plus juste, plus lisible et plus pilotable.</li>
-                <li>La même interface peut servir au guichet, en permanence ou en appui d'une tournée.</li>
-              </ul>
+              <ol class="story-steps">
+                <li class="story-step">
+                  <span class="story-step-index">1</span>
+                  <div class="story-step-body">
+                    <p class="story-step-title">Vision du foyer complet</p>
+                    <p class="story-step-copy">
+                      Tous les habitants liés à la même adresse sont visibles ensemble pour mieux
+                      comprendre la situation du ménage.
+                    </p>
+                  </div>
+                </li>
+                <li class="story-step">
+                  <span class="story-step-index">2</span>
+                  <div class="story-step-body">
+                    <p class="story-step-title">Localisation sur carte</p>
+                    <p class="story-step-copy">
+                      La carte aide à confirmer l'emplacement, à préparer une tournée ou à lever un
+                      doute sur une adresse.
+                    </p>
+                  </div>
+                </li>
+                <li class="story-step">
+                  <span class="story-step-index">3</span>
+                  <div class="story-step-body">
+                    <p class="story-step-title">Contexte pour l'action</p>
+                    <p class="story-step-copy">
+                      L'adresse et le foyer donnent à l'agent plus de certitude avant
+                      d'enregistrer une nouvelle remise.
+                    </p>
+                  </div>
+                </li>
+              </ol>
+              <section class="story-section">
+                <h3 class="story-section-title">But global de l'application</h3>
+                <p class="story-note">
+                  Fiabiliser la distribution des sacs poubelle à l'échelle d'une commune en
+                  reliant les données administratives, les foyers, les remises et le stock dans
+                  un seul outil.
+                </p>
+              </section>
+              <section class="story-section">
+                <h3 class="story-section-title">Valeur pour la collectivité</h3>
+                <p class="story-note">
+                  L'outil rend la campagne plus lisible, plus juste et plus pilotable : on sait
+                  mieux qui a été servi, ce qu'il reste en stock et où concentrer l'action.
+                </p>
+              </section>
             </article>
           </aside>
-        </div>
-
-        <div class="summary-grid four">
-          <article class="summary-card">
-            <strong>Gain de temps</strong>
-            <p>Moins d'allers-retours entre plusieurs supports ou plusieurs outils.</p>
-          </article>
-          <article class="summary-card">
-            <strong>Justesse</strong>
-            <p>Une meilleure association entre personne, foyer, adresse et remise enregistrée.</p>
-          </article>
-          <article class="summary-card">
-            <strong>Pilotage</strong>
-            <p>Un suivi plus simple du stock et de la couverture réelle de la campagne.</p>
-          </article>
-          <article class="summary-card">
-            <strong>Base évolutive</strong>
-            <p>Une fondation exploitable pour l'historique par campagne et d'autres indicateurs.</p>
-          </article>
         </div>
         <p class="page-footer">4/5</p>
       </section>
@@ -1163,7 +1402,287 @@
     </main>
 
     <script>
-      document.getElementById("export-pdf").addEventListener("click", () => {
+      const PDF_PAGE_WIDTH_PT = 841.89;
+      const PDF_PAGE_HEIGHT_PT = 595.28;
+      const PDF_RENDER_SCALE = 2;
+      const PDF_FILE_NAME = "presentation-distribution-sacs.pdf";
+      const ROOT_VARIABLES = [
+        "--page-bg",
+        "--paper",
+        "--line",
+        "--line-strong",
+        "--ink",
+        "--ink-soft",
+        "--sea",
+        "--sea-deep",
+        "--sea-mist",
+        "--rust",
+        "--rust-soft",
+        "--gold",
+        "--panel",
+        "--shadow",
+        "--ui-font",
+      ];
+
+      const downloadPdfButton = document.getElementById("download-pdf");
+      const printPdfButton = document.getElementById("print-pdf");
+      const toolbarCopy = document.querySelector(".toolbar-copy");
+      const defaultToolbarCopy = toolbarCopy.textContent.trim();
+
+      function setToolbarMessage(message) {
+        toolbarCopy.textContent = message;
+      }
+
+      function setPdfExportBusy(isBusy) {
+        downloadPdfButton.disabled = isBusy;
+        printPdfButton.disabled = isBusy;
+        downloadPdfButton.textContent = isBusy ? "Génération..." : "Télécharger le PDF";
+      }
+
+      function blobToDataUrl(blob) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = () => reject(reader.error);
+          reader.readAsDataURL(blob);
+        });
+      }
+
+      function dataUrlToBytes(dataUrl) {
+        const base64 = dataUrl.split(",")[1];
+        const binary = atob(base64);
+        const bytes = new Uint8Array(binary.length);
+        for (let index = 0; index < binary.length; index += 1) {
+          bytes[index] = binary.charCodeAt(index);
+        }
+        return bytes;
+      }
+
+      function loadImage(source) {
+        return new Promise((resolve, reject) => {
+          const image = new Image();
+          image.onload = () => resolve(image);
+          image.onerror = () => reject(new Error("Impossible de charger une image pour le PDF."));
+          image.src = source;
+        });
+      }
+
+      async function inlineCloneImages(sourcePage, clonedPage) {
+        const sourceImages = Array.from(sourcePage.querySelectorAll("img"));
+        const clonedImages = Array.from(clonedPage.querySelectorAll("img"));
+
+        await Promise.all(
+          sourceImages.map(async (sourceImage, index) => {
+            const clonedImage = clonedImages[index];
+            if (!clonedImage) {
+              return;
+            }
+
+            const imageUrl = sourceImage.currentSrc || sourceImage.src;
+            if (!imageUrl) {
+              return;
+            }
+
+            try {
+              const response = await fetch(new URL(imageUrl, window.location.href).href);
+              const imageBlob = await response.blob();
+              clonedImage.src = await blobToDataUrl(imageBlob);
+            } catch (error) {
+              clonedImage.src = imageUrl;
+            }
+          })
+        );
+      }
+
+      function getRootVariableStyle() {
+        const computedRootStyle = getComputedStyle(document.documentElement);
+        return ROOT_VARIABLES.map((name) => `${name}: ${computedRootStyle.getPropertyValue(name).trim()};`).join(
+          " "
+        );
+      }
+
+      function buildPageSvgMarkup(clonedPage, width, height) {
+        const pageStyles = Array.from(document.querySelectorAll("style"))
+          .map((styleTag) => styleTag.textContent)
+          .join("\n");
+        const variableStyle = getRootVariableStyle();
+
+        return `
+          <svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
+            <foreignObject width="100%" height="100%">
+              <div
+                xmlns="http://www.w3.org/1999/xhtml"
+                style="width:${width}px;height:${height}px;${variableStyle}"
+              >
+                <style>${pageStyles}</style>
+                ${clonedPage.outerHTML}
+              </div>
+            </foreignObject>
+          </svg>
+        `;
+      }
+
+      async function renderPageToJpegBytes(pageElement) {
+        const pageRect = pageElement.getBoundingClientRect();
+        const pageWidth = Math.round(pageRect.width);
+        const pageHeight = Math.round(pageRect.height);
+        const clonedPage = pageElement.cloneNode(true);
+
+        clonedPage.style.width = `${pageWidth}px`;
+        clonedPage.style.height = `${pageHeight}px`;
+        clonedPage.style.margin = "0";
+        clonedPage.style.boxSizing = "border-box";
+
+        await inlineCloneImages(pageElement, clonedPage);
+
+        const svgMarkup = buildPageSvgMarkup(clonedPage, pageWidth, pageHeight);
+        const svgBlob = new Blob([svgMarkup], { type: "image/svg+xml;charset=utf-8" });
+        const svgUrl = URL.createObjectURL(svgBlob);
+
+        try {
+          const renderedImage = await loadImage(svgUrl);
+          const canvas = document.createElement("canvas");
+          canvas.width = Math.round(pageWidth * PDF_RENDER_SCALE);
+          canvas.height = Math.round(pageHeight * PDF_RENDER_SCALE);
+
+          const context = canvas.getContext("2d");
+          context.fillStyle = "#ffffff";
+          context.fillRect(0, 0, canvas.width, canvas.height);
+          context.scale(PDF_RENDER_SCALE, PDF_RENDER_SCALE);
+          context.drawImage(renderedImage, 0, 0, pageWidth, pageHeight);
+
+          return {
+            width: canvas.width,
+            height: canvas.height,
+            bytes: dataUrlToBytes(canvas.toDataURL("image/jpeg", 0.94)),
+          };
+        } finally {
+          URL.revokeObjectURL(svgUrl);
+        }
+      }
+
+      function buildPdfDocument(renderedPages) {
+        const encoder = new TextEncoder();
+        const totalObjects = 2 + renderedPages.length * 3;
+        const pageObjectNumbers = renderedPages.map((_, index) => 3 + index * 3);
+        const contentObjectNumbers = renderedPages.map((_, index) => 4 + index * 3);
+        const imageObjectNumbers = renderedPages.map((_, index) => 5 + index * 3);
+        const chunks = [];
+        const offsets = new Array(totalObjects + 1).fill(0);
+        let byteLength = 0;
+
+        const pushText = (value) => {
+          const bytes = encoder.encode(value);
+          chunks.push(bytes);
+          byteLength += bytes.length;
+        };
+
+        const pushBytes = (value) => {
+          chunks.push(value);
+          byteLength += value.length;
+        };
+
+        const openObject = (objectNumber) => {
+          offsets[objectNumber] = byteLength;
+          pushText(`${objectNumber} 0 obj\n`);
+        };
+
+        const closeObject = () => {
+          pushText("endobj\n");
+        };
+
+        // Rasterize each A4 page exactly as displayed, then assemble a multi-page PDF.
+        pushText("%PDF-1.4\n%1234\n");
+
+        openObject(1);
+        pushText("<< /Type /Catalog /Pages 2 0 R >>\n");
+        closeObject();
+
+        openObject(2);
+        pushText(
+          `<< /Type /Pages /Count ${renderedPages.length} /Kids [${pageObjectNumbers
+            .map((objectNumber) => `${objectNumber} 0 R`)
+            .join(" ")}] >>\n`
+        );
+        closeObject();
+
+        renderedPages.forEach((page, index) => {
+          const pageObjectNumber = pageObjectNumbers[index];
+          const contentObjectNumber = contentObjectNumbers[index];
+          const imageObjectNumber = imageObjectNumbers[index];
+          const imageName = `Im${index + 1}`;
+          const contentStream = `q\n${PDF_PAGE_WIDTH_PT} 0 0 ${PDF_PAGE_HEIGHT_PT} 0 0 cm\n/${imageName} Do\nQ\n`;
+          const contentLength = encoder.encode(contentStream).length;
+
+          openObject(pageObjectNumber);
+          pushText(
+            `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${PDF_PAGE_WIDTH_PT} ${PDF_PAGE_HEIGHT_PT}] /Resources << /XObject << /${imageName} ${imageObjectNumber} 0 R >> >> /Contents ${contentObjectNumber} 0 R >>\n`
+          );
+          closeObject();
+
+          openObject(contentObjectNumber);
+          pushText(`<< /Length ${contentLength} >>\nstream\n${contentStream}endstream\n`);
+          closeObject();
+
+          openObject(imageObjectNumber);
+          pushText(
+            `<< /Type /XObject /Subtype /Image /Width ${page.width} /Height ${page.height} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${page.bytes.length} >>\nstream\n`
+          );
+          pushBytes(page.bytes);
+          pushText("\nendstream\n");
+          closeObject();
+        });
+
+        const xrefOffset = byteLength;
+        pushText(`xref\n0 ${totalObjects + 1}\n`);
+        pushText("0000000000 65535 f \n");
+        for (let objectNumber = 1; objectNumber <= totalObjects; objectNumber += 1) {
+          pushText(`${String(offsets[objectNumber]).padStart(10, "0")} 00000 n \n`);
+        }
+        pushText(`trailer\n<< /Size ${totalObjects + 1} /Root 1 0 R >>\nstartxref\n${xrefOffset}\n%%EOF`);
+
+        return new Blob(chunks, { type: "application/pdf" });
+      }
+
+      async function exportDeckToPdf() {
+        setPdfExportBusy(true);
+        setToolbarMessage("Génération du PDF en cours...");
+
+        try {
+          if (document.fonts?.ready) {
+            await document.fonts.ready;
+          }
+
+          const pages = Array.from(document.querySelectorAll(".page"));
+          const renderedPages = [];
+
+          for (const page of pages) {
+            renderedPages.push(await renderPageToJpegBytes(page));
+          }
+
+          const pdfBlob = buildPdfDocument(renderedPages);
+          const pdfUrl = URL.createObjectURL(pdfBlob);
+          const link = document.createElement("a");
+          link.href = pdfUrl;
+          link.download = PDF_FILE_NAME;
+          link.click();
+          window.setTimeout(() => URL.revokeObjectURL(pdfUrl), 1000);
+          setToolbarMessage("Le PDF a été généré à partir des pages affichées.");
+        } catch (error) {
+          console.error(error);
+          setToolbarMessage("L’export direct a échoué. L’aperçu impression a été ouvert à la place.");
+          window.print();
+        } finally {
+          setPdfExportBusy(false);
+        }
+      }
+
+      downloadPdfButton.addEventListener("click", () => {
+        exportDeckToPdf();
+      });
+
+      printPdfButton.addEventListener("click", () => {
+        setToolbarMessage(defaultToolbarCopy);
         window.print();
       });
     </script>

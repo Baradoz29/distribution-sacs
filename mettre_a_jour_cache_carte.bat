@@ -20,7 +20,7 @@ if not defined PYTHON_CMD (
 )
 
 echo Mise a jour du cache local de la carte...
-call %PYTHON_CMD% scripts\refresh_building_cache.py
+call %PYTHON_CMD% outils\refresh_building_cache.py
 if errorlevel 1 (
     echo Echec de la mise a jour du cache local.
     pause

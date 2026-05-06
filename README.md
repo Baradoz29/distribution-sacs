@@ -15,10 +15,10 @@ Prototype local pour suivre la distribution de sacs poubelle dans une commune co
 
 ## Lancer le projet
 
-1. Initialiser la base :
+1. Initialiser la base locale :
 
 ```powershell
-python scripts/init_db.py
+python outils/init_db.py
 ```
 
 2. Demarrer le serveur local :
@@ -27,24 +27,60 @@ python scripts/init_db.py
 python app.py
 ```
 
+Alternative Windows :
+
+```powershell
+.\lancer_application.bat
+```
+
 3. Ouvrir ensuite :
 
 ```text
 http://127.0.0.1:8000
 ```
 
-## Scripts utiles
+## Variante de developpement
+
+Le repertoire `_dev/` contient une copie de travail de l'application pour les essais de structure et de lancement.
+
+- `app.py`, `database.py`, `launcher.py` et `runtime_paths.py` y sont recopies pour tester une variante de distribution ;
+- les donnees generees localement dans `_dev/data/` ne sont pas versionnees ;
+- le point d'entree Windows de cette variante est `_dev/lancer_application.bat`.
+
+## Generer un executable Windows
+
+Le projet peut etre empaquete en `.exe` avec PyInstaller :
+
+```powershell
+pyinstaller suivi_distribution_sacs.spec
+```
+
+Le build s'appuie sur :
+
+- `launcher.py` comme point d'entree de l'application a empaqueter ;
+- `runtime_paths.py` pour resoudre les chemins en mode source ou en mode executable ;
+- `suivi_distribution_sacs.spec` pour declarer les ressources embarquees.
+
+L'executable genere se trouve ensuite dans :
+
+```text
+dist\SuiviDistributionSacs.exe
+```
+
+Au premier lancement, l'executable cree son propre dossier `data` a cote du `.exe`, initialise la base si besoin, puis ouvre l'application dans le navigateur.
+
+## Outils utiles
 
 Regenerer des habitants fictifs :
 
 ```powershell
-python scripts/generate_fake_residents.py --force --households 12
+python outils/generate_fake_residents.py --force --households 12
 ```
 
 Importer les adresses publiques BAN de Douarnenez :
 
 ```powershell
-python scripts/import_ban_addresses.py --city-code 29046 --department 29 --city-name Douarnenez
+python outils/import_ban_addresses.py --city-code 29046 --department 29 --city-name Douarnenez
 ```
 
 Le script d'import enregistre aussi un apercu JSON dans `data/douarnenez_addresses_preview.json`.
@@ -53,8 +89,20 @@ Le script d'import enregistre aussi un apercu JSON dans `data/douarnenez_address
 
 - `app.py` : serveur HTTP local et API JSON
 - `database.py` : schema SQLite, donnees de demo et fonctions de seed
+- `launcher.py` : point d'entree minimal pour le lancement et l'empaquetage
+- `runtime_paths.py` : gestion des chemins en mode developpement et PyInstaller
 - `static/` : interface HTML/CSS/JS
-- `scripts/` : initialisation, import BAN, generation d'habitants fictifs
+- `data/` : donnees de reference versionnees
+- `outils/` : initialisation, import BAN, generation d'habitants fictifs et scripts utilitaires
+- `_dev/` : variante de developpement de la distribution
+
+## Fichiers generes localement
+
+Ne sont pas pousses sur GitHub :
+
+- `build/` et `dist/` pour les builds PyInstaller ;
+- les bases SQLite locales dans `data/` et `_dev/data/` ;
+- les caches de tuiles, profils headless Chrome et dossiers `__pycache__/`.
 
 ## Notes sur les donnees publiques
 

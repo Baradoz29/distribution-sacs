@@ -20,7 +20,7 @@ if not defined PYTHON_CMD (
 )
 
 echo Regeneration realiste des habitants fictifs...
-call %PYTHON_CMD% scripts\regenerate_realistic_residents.py --force --population 14068
+call %PYTHON_CMD% outils\regenerate_realistic_residents.py --force --population 14068
 if errorlevel 1 (
     echo Echec de la regeneration des habitants.
     pause
