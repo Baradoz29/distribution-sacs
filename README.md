@@ -39,14 +39,6 @@ Alternative Windows :
 http://127.0.0.1:8000
 ```
 
-## Variante de developpement
-
-Le repertoire `_dev/` contient une copie de travail de l'application pour les essais de structure et de lancement.
-
-- `app.py`, `database.py`, `launcher.py` et `runtime_paths.py` y sont recopies pour tester une variante de distribution ;
-- les donnees generees localement dans `_dev/data/` ne sont pas versionnees ;
-- le point d'entree Windows de cette variante est `_dev/lancer_application.bat`.
-
 ## Generer un executable Windows
 
 Le projet peut etre empaquete en `.exe` avec PyInstaller :
@@ -94,14 +86,13 @@ Le script d'import enregistre aussi un apercu JSON dans `data/douarnenez_address
 - `static/` : interface HTML/CSS/JS
 - `data/` : donnees de reference versionnees
 - `outils/` : initialisation, import BAN, generation d'habitants fictifs et scripts utilitaires
-- `_dev/` : variante de developpement de la distribution
 
 ## Fichiers generes localement
 
 Ne sont pas pousses sur GitHub :
 
 - `build/` et `dist/` pour les builds PyInstaller ;
-- les bases SQLite locales dans `data/` et `_dev/data/` ;
+- les bases SQLite locales dans `data/` ;
 - les caches de tuiles, profils headless Chrome et dossiers `__pycache__/`.
 
 ## Notes sur les donnees publiques
