@@ -140,8 +140,9 @@ Si les services cartographiques distants sont indisponibles, l'application bascu
 - preparer aussi le chemin inverse pour exporter les donnees saisies vers un format exploitable par la collectivite ;
 - adapter les scripts d'import et de generation aux donnees reelles disponibles sur le terrain ;
 - verifier la qualite des correspondances entre habitants, adresses, foyers et batiments ;
-- definir un processus simple de mise a jour des donnees avant chaque campagne ;
-- ajouter un historique de distributions par campagne, avec dates, volumes et agent declarant ;
+- definir un processus simple de mise a jour des donnees avant chaque nouvelle annee de distribution ;
+- ajouter une regle claire pour gerer le retrait annuel de sacs par habitant ou par foyer ;
+- conserver un historique des remises avec date, volume et agent declarant pour savoir si le retrait annuel a deja eu lieu ;
 - stabiliser un mode de deploiement poste par poste ou via un executable Windows pour les agents.
 
 ## Ameliorations possibles
@@ -150,8 +151,8 @@ Si les services cartographiques distants sont indisponibles, l'application bascu
 - ajouter une recherche multi-criteres plus fine par nom, adresse, foyer ou commentaire ;
 - envoyer une notification mail automatique quand le stock de sacs devient faible ;
 - proposer des alertes sur les incoherences de distribution ou les doublons potentiels ;
-- ajouter des exports CSV ou Excel pour le suivi par campagne ;
-- gerer plusieurs campagnes simultanees avec filtres et tableaux de bord ;
+- ajouter des exports CSV ou Excel pour le suivi annuel des remises ;
+- afficher plus clairement si un habitant ou un foyer a deja retire ses sacs pour l'annee en cours ;
 - ajouter une authentification simple avec journal des actions ;
 - prevoir une interface plus adaptee a un usage tablette ou accueil guichet ;
 - enrichir la fiche foyer avec des remarques, justificatifs ou statuts de passage ;
