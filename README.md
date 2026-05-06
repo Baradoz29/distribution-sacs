@@ -1,19 +1,37 @@
 # Suivi de distribution de sacs poubelle
 
-Prototype local pour suivre la distribution de sacs poubelle dans une commune comme Douarnenez.
+Application web locale pour suivre la distribution de sacs poubelle dans une commune comme Douarnenez.
 
-## Ce que contient cette premiere version
+Le projet combine un annuaire de foyers, une carte, un suivi des remises et des outils de preparation de donnees pour aider un service communal a distribuer, verifier et historiser plus simplement.
 
-- une application web Python sans dependance obligatoire cote serveur ;
-- une carte HTML interactive avec zoom, panning et selection visuelle de batiments ;
-- un fond cartographique public IGN avec surcouche parcellaire cadastrale ;
-- une base SQLite scriptable avec habitants fictifs ;
-- une recherche par nom, prenom ou adresse ;
-- un formulaire simple pour mettre a jour le nombre de sacs noirs et jaunes recus ;
-- un script pour importer plus tard les vraies adresses publiques de Douarnenez depuis la BAN ;
-- un script pour regenerer des habitants fictifs a partir des adresses disponibles.
+## Apercu
 
-## Lancer le projet
+Presentation visuelle complete : [presentation-a4.html](static/presentation-a4.html)
+
+Les captures ci-dessous reprennent les ecrans utilises dans cette presentation.
+
+### Ecran 1 - Vue generale et carte
+
+<img src="static/images/presentation-screen-1.png" alt="Ecran 1 - Vue generale et carte" width="1100">
+
+### Ecran 2 - Recherche, fiche habitant et historique
+
+<img src="static/images/presentation-screen-2.png" alt="Ecran 2 - Recherche, fiche habitant et historique" width="1100">
+
+### Ecran 3 - Foyer, adresse et mini-carte
+
+<img src="static/images/presentation-screen-3.png" alt="Ecran 3 - Foyer, adresse et mini-carte" width="1100">
+
+## Ce que fait l'application
+
+- recherche un habitant par nom, prenom ou adresse ;
+- affiche les foyers et les adresses associees ;
+- permet de saisir les remises de sacs noirs et jaunes ;
+- conserve un historique des remises deja effectuees ;
+- montre le contexte geographique avec une carte et des batiments ;
+- peut fonctionner avec des donnees de demonstration et des imports prepares localement.
+
+## Demarrage rapide
 
 1. Initialiser la base locale :
 
@@ -39,9 +57,31 @@ Alternative Windows :
 http://127.0.0.1:8000
 ```
 
-## Generer un executable Windows
+## Outils
 
-Le projet peut etre empaquete en `.exe` avec PyInstaller :
+Generation rapide d'habitants fictifs :
+
+```powershell
+python outils/generate_fake_residents.py --force --households 12
+```
+
+Import des adresses publiques BAN de Douarnenez :
+
+```powershell
+python outils/import_ban_addresses.py --city-code 29046 --department 29 --city-name Douarnenez
+```
+
+Le script d'import enregistre un apercu JSON dans `outils/data/douarnenez_addresses_preview.json`.
+
+Wrappers Windows disponibles dans `outils/` :
+
+- `outils/regenerer_habitants_realistes.bat`
+- `outils/mettre_a_jour_cache_carte.bat`
+- `outils/mettre_a_jour_cache_tuiles_satellite.bat`
+
+## Executable Windows
+
+Le projet peut etre empaquete avec PyInstaller :
 
 ```powershell
 pyinstaller suivi_distribution_sacs.spec
@@ -61,37 +101,15 @@ dist\SuiviDistributionSacs.exe
 
 Au premier lancement, l'executable cree son propre dossier `data` a cote du `.exe`, initialise la base si besoin, puis ouvre l'application dans le navigateur.
 
-## Outils utiles
-
-Regenerer des habitants fictifs :
-
-```powershell
-python outils/generate_fake_residents.py --force --households 12
-```
-
-Importer les adresses publiques BAN de Douarnenez :
-
-```powershell
-python outils/import_ban_addresses.py --city-code 29046 --department 29 --city-name Douarnenez
-```
-
-Le script d'import enregistre aussi un apercu JSON dans `outils/data/douarnenez_addresses_preview.json`.
-
-Wrappers Windows disponibles dans `outils/` :
-
-- `outils/regenerer_habitants_realistes.bat`
-- `outils/mettre_a_jour_cache_carte.bat`
-- `outils/mettre_a_jour_cache_tuiles_satellite.bat`
-
-## Architecture rapide
+## Organisation du depot
 
 - `app.py` : serveur HTTP local et API JSON
 - `database.py` : schema SQLite, donnees de demo et fonctions de seed
 - `launcher.py` : point d'entree minimal pour le lancement et l'empaquetage
 - `runtime_paths.py` : gestion des chemins en mode developpement et PyInstaller
-- `static/` : interface HTML/CSS/JS
+- `static/` : interface HTML/CSS/JS et captures de presentation
 - `data/` : donnees de reference utilisees directement par l'application
-- `outils/` : initialisation, import BAN, generation d'habitants fictifs et scripts utilitaires
+- `outils/` : scripts utilitaires, wrappers Windows et outillage de preparation
 - `outils/data/` : caches, apercus et jeux de donnees lies aux scripts d'outillage
 
 ## Fichiers generes localement
@@ -102,7 +120,7 @@ Ne sont pas pousses sur GitHub :
 - les bases SQLite locales dans `data/` ;
 - les caches de tuiles, profils headless Chrome et dossiers `__pycache__/`.
 
-## Notes sur les donnees publiques
+## Donnees publiques
 
 La carte utilise les services publics de l'IGN quand ils repondent :
 
