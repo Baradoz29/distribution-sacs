@@ -77,6 +77,12 @@ python outils/import_ban_addresses.py --city-code 29046 --department 29 --city-n
 
 Le script d'import enregistre aussi un apercu JSON dans `outils/data/douarnenez_addresses_preview.json`.
 
+Wrappers Windows disponibles dans `outils/` :
+
+- `outils/regenerer_habitants_realistes.bat`
+- `outils/mettre_a_jour_cache_carte.bat`
+- `outils/mettre_a_jour_cache_tuiles_satellite.bat`
+
 ## Architecture rapide
 
 - `app.py` : serveur HTTP local et API JSON
