@@ -10,7 +10,9 @@ RESOURCE_BASE_DIR = Path(getattr(sys, "_MEIPASS", PROJECT_DIR)).resolve()
 APP_HOME_DIR = (Path(sys.executable).resolve().parent if IS_FROZEN else PROJECT_DIR).resolve()
 STATIC_DIR = RESOURCE_BASE_DIR / "static"
 BUNDLED_DATA_DIR = RESOURCE_BASE_DIR / "data"
+BUNDLED_TOOL_DATA_DIR = RESOURCE_BASE_DIR / "outils" / "data"
 DATA_DIR = APP_HOME_DIR / "data"
+TOOL_DATA_DIR = PROJECT_DIR / "outils" / "data"
 
 
 def ensure_data_dir() -> Path:
@@ -40,3 +42,11 @@ def get_runtime_data_path(relative_path: str | Path, *, copy_if_missing: bool = 
             pass
 
     return target_path
+
+
+def get_tool_data_path(relative_path: str | Path) -> Path:
+    relative_path = Path(relative_path)
+    bundled_path = BUNDLED_TOOL_DATA_DIR / relative_path
+    if bundled_path.exists():
+        return bundled_path
+    return TOOL_DATA_DIR / relative_path

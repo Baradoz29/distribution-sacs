@@ -75,7 +75,7 @@ Importer les adresses publiques BAN de Douarnenez :
 python outils/import_ban_addresses.py --city-code 29046 --department 29 --city-name Douarnenez
 ```
 
-Le script d'import enregistre aussi un apercu JSON dans `data/douarnenez_addresses_preview.json`.
+Le script d'import enregistre aussi un apercu JSON dans `outils/data/douarnenez_addresses_preview.json`.
 
 ## Architecture rapide
 
@@ -84,8 +84,9 @@ Le script d'import enregistre aussi un apercu JSON dans `data/douarnenez_address
 - `launcher.py` : point d'entree minimal pour le lancement et l'empaquetage
 - `runtime_paths.py` : gestion des chemins en mode developpement et PyInstaller
 - `static/` : interface HTML/CSS/JS
-- `data/` : donnees de reference versionnees
+- `data/` : donnees de reference utilisees directement par l'application
 - `outils/` : initialisation, import BAN, generation d'habitants fictifs et scripts utilitaires
+- `outils/data/` : caches, apercus et jeux de donnees lies aux scripts d'outillage
 
 ## Fichiers generes localement
 

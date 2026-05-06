@@ -14,6 +14,7 @@ if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
 from database import DEFAULT_DB_PATH, initialize_database  # noqa: E402
+from runtime_paths import TOOL_DATA_DIR  # noqa: E402
 
 BAN_URL_TEMPLATE = "https://adresse.data.gouv.fr/data/ban/adresses/latest/csv/adresses-{department}.csv.gz"
 
@@ -126,7 +127,8 @@ def import_ban_addresses(
         connection.commit()
 
         if output_preview:
-            preview_path = ROOT_DIR / "data" / "douarnenez_addresses_preview.json"
+            preview_path = TOOL_DATA_DIR / "douarnenez_addresses_preview.json"
+            preview_path.parent.mkdir(parents=True, exist_ok=True)
             preview_path.write_text(json.dumps(preview_rows, ensure_ascii=True, indent=2), encoding="utf-8")
 
         total = connection.execute(

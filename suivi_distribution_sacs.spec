@@ -7,7 +7,7 @@ ROOT_DIR = Path(globals().get("SPECPATH", ".")).resolve()
 DATA_FILES = [
     (str(ROOT_DIR / "static"), "static"),
     (str(ROOT_DIR / "data" / "douarnenez_buildings_geopf_snapshot.geojson"), "data"),
-    (str(ROOT_DIR / "data" / "insee_first_names_weighted.json"), "data"),
+    (str(ROOT_DIR / "outils" / "data" / "insee_first_names_weighted.json"), "outils/data"),
 ]
 
 a = Analysis(

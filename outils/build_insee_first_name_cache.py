@@ -20,7 +20,7 @@ ROOT_DIR = Path(__file__).resolve().parents[1]
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from database import INSEE_FIRST_NAMES_CACHE_PATH  # noqa: E402
+from runtime_paths import TOOL_DATA_DIR  # noqa: E402
 
 
 INSEE_FIRST_NAMES_PAGE_URL = "https://www.insee.fr/fr/statistiques/8595130"
@@ -32,6 +32,7 @@ CSV_FILE_HINT_PATTERN = re.compile(
     re.IGNORECASE,
 )
 LIGHT_DEPARTMENT_HINTS = ("2000", "allege", "light")
+DEFAULT_OUTPUT_PATH = TOOL_DATA_DIR / "insee_first_names_weighted.json"
 
 
 def normalize_key(value: str) -> str:
@@ -287,7 +288,7 @@ def main() -> None:
     parser.add_argument("--page-url", default=INSEE_FIRST_NAMES_PAGE_URL, help="Page officielle Insee a analyser.")
     parser.add_argument("--department", default=DEFAULT_DEPARTMENT_CODE, help="Code departement a privilegier.")
     parser.add_argument("--region", default=DEFAULT_REGION_CODE, help="Code region de repli.")
-    parser.add_argument("--output", default=str(INSEE_FIRST_NAMES_CACHE_PATH), help="Fichier JSON de sortie.")
+    parser.add_argument("--output", default=str(DEFAULT_OUTPUT_PATH), help="Fichier JSON de sortie.")
     parser.add_argument("--timeout", type=int, default=30, help="Timeout reseau en secondes.")
     args = parser.parse_args()
 

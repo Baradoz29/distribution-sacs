@@ -7,10 +7,10 @@ import unicodedata
 import json
 from pathlib import Path
 
-from runtime_paths import DATA_DIR, get_runtime_data_path
+from runtime_paths import DATA_DIR, get_tool_data_path
 
 DEFAULT_DB_PATH = DATA_DIR / "waste_tracking.db"
-INSEE_FIRST_NAMES_CACHE_PATH = get_runtime_data_path("insee_first_names_weighted.json", copy_if_missing=True)
+INSEE_FIRST_NAMES_CACHE_PATH = get_tool_data_path("insee_first_names_weighted.json")
 TERRITORY_COMMUNE_CONFIGS = (
     {
         "city_code": "29046",
