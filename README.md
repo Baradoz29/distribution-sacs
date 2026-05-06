@@ -134,10 +134,25 @@ Si les services cartographiques distants sont indisponibles, l'application bascu
 - Les services WMTS GeoPlateforme : https://cartes.gouv.fr/aide/fr/guides-utilisateur/utiliser-les-services-de-la-geoplateforme/diffusion/wmts/
 - Les services WFS GeoPlateforme : https://cartes.gouv.fr/aide/fr/guides-utilisateur/utiliser-les-services-de-la-geoplateforme/diffusion/wfs/
 
-## Suite logique
+## Suite logique de deploiement
 
-- importer toutes les adresses de Douarnenez via la BAN ;
-- ajouter un vrai annuaire des voies et adresses dans l'interface ;
-- generer automatiquement des familles fictives a partir de ces adresses ;
-- lier chaque foyer a un batiment reel ou a une parcelle ;
-- ajouter un historique de distributions par campagne.
+- preparer un script de conversion des habitants reels vers un format compatible avec l'application ;
+- preparer aussi le chemin inverse pour exporter les donnees saisies vers un format exploitable par la collectivite ;
+- adapter les scripts d'import et de generation aux donnees reelles disponibles sur le terrain ;
+- verifier la qualite des correspondances entre habitants, adresses, foyers et batiments ;
+- definir un processus simple de mise a jour des donnees avant chaque campagne ;
+- ajouter un historique de distributions par campagne, avec dates, volumes et agent declarant ;
+- stabiliser un mode de deploiement poste par poste ou via un executable Windows pour les agents.
+
+## Ameliorations possibles
+
+- ajouter une recherche par numero de telephone ;
+- ajouter une recherche multi-criteres plus fine par nom, adresse, foyer ou commentaire ;
+- envoyer une notification mail automatique quand le stock de sacs devient faible ;
+- proposer des alertes sur les incoherences de distribution ou les doublons potentiels ;
+- ajouter des exports CSV ou Excel pour le suivi par campagne ;
+- gerer plusieurs campagnes simultanees avec filtres et tableaux de bord ;
+- ajouter une authentification simple avec journal des actions ;
+- prevoir une interface plus adaptee a un usage tablette ou accueil guichet ;
+- enrichir la fiche foyer avec des remarques, justificatifs ou statuts de passage ;
+- brancher des integrations mail ou metier pour fluidifier le suivi operationnel.
